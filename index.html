@@ -348,15 +348,50 @@ svg#picklerick .st4 {
                 transform: rotateY(0deg);
             }
         }
+        .fireworks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
 
+        .firework {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            animation: explode 2s forwards infinite;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
-    
+    <audio id="backgroundMusic" autoplay loop>
+        <source src="assets/musik.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
     <div class="svgcontainer">
         <div class="subcont">
             <div class="topconvo">
                 <br />Selamat Ulang Tahun
+                <br>
+                semoga dengan bertambahnya usia,Allah beri kesehatan, rezeki yang melimpah, dan kebahagiaan yang tak terhingga.selalu jadi istri yang baik dan anak yang sholehah bagi orang tua. Aamiin
             </div>
             <div class="bottomconvo">
                 <a href="#" class="btn btn-success" onclick="showImages(); return false;">Click Me</a>
@@ -364,6 +399,7 @@ svg#picklerick .st4 {
             <div id="imageContainer"></div>
         </div>
     </div>
+    <div id="fireworks" class="fireworks"></div>
 	<svg id="picklerick" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 	    x="0px" y="0px" viewBox="0 0 514.366 679.479" style="enable-background:new 0 0 514.366 679.479;" xml:space="preserve">
 		<g>
@@ -638,6 +674,37 @@ svg#picklerick .st4 {
                 img.classList.add('flip'); // Add the flip class
                 imageContainer.appendChild(img);
             });
+
+            // Generate fireworks
+            createFireworks();
+        }
+
+        function createFireworks() {
+            const fireworksContainer = document.getElementById('fireworks');
+            for (let i = 0; i < 10; i++) {
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+                firework.style.backgroundColor = getRandomColor();
+                firework.style.width = `${Math.random() * 30 + 10}px`;
+                firework.style.height = firework.style.width;
+                firework.style.left = `${Math.random() * 100}vw`;
+                firework.style.top = `${Math.random() * 100}vh`;
+                fireworksContainer.appendChild(firework);
+
+                // Remove the firework after animation
+                firework.addEventListener('animationend', () => {
+                    firework.remove();
+                });
+            }
+        }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
         }
     </script>
 </body>
